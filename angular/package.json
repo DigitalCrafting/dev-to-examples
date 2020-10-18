@@ -36,8 +36,10 @@
     "@angular/router": "10.0.7",
     "@ng-bootstrap/ng-bootstrap": "7.0.0",
     "bootstrap-css-only": "4.4.1",
-    "font-awesome": "4.7.0",
     "core-js": "2.5.4",
+    "font-awesome": "4.7.0",
+    "jquery": "^3.5.1",
+    "popper.js": "^1.16.1",
     "rxjs": "6.4.0",
     "tslib": "1.10.0",
     "zone.js": "0.9.1"

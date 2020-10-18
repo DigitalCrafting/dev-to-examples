@@ -5,6 +5,8 @@ import "@angular/common";
 import "@angular/common/http";
 import "@angular/router";
 import "rxjs";
+import '@ng-bootstrap/ng-bootstrap';
+import "bootstrap-css-only/css/bootstrap.min.css";
 
 import * as moment from "moment";
 import "moment/min/locales";
