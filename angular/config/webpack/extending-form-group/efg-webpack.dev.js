@@ -33,7 +33,8 @@ module.exports = webpackMerge(commonConfig, {
             {
                 test: /\.ts$/,
                 include: [
-                    helpers.root('projects/extending-form-group/src')
+                    helpers.root('projects/extending-form-group/src'),
+                    helpers.root('projects/core')
                 ],
                 use: [
                     {

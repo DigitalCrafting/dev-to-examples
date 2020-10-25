@@ -22,6 +22,10 @@ module.exports = webpackMerge(commonConfig, {
         rules: [
             {
                 test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts|\.d\.ts)$/,
+                include: [
+                    helpers.root('projects/extending-form-group/src'),
+                    helpers.root('projects/core')
+                ],
                 loader: '@ngtools/webpack'
             }
         ]
