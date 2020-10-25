@@ -1,0 +1,11 @@
+<div class="form-group" [formGroup]="formGroup">
+    <label for="{{inputId}}">{{label}}</label>
+    <input
+            [class.is-invalid]="formGroup.get(controlName)?.dirty && formGroup.get(controlName)?.invalid"
+            [formControlName]="controlName"
+            type="text"
+            class="form-control"
+            autocomplete="off"
+            id="{{inputId}}"
+    >
+</div>
