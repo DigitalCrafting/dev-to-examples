@@ -86,7 +86,8 @@ module.exports = webpackMerge(commonConfig, {
         stats: 'minimal',
         watchOptions: {
             ignored: /node_modules/
-        }
+        },
+        watchContentBase: true
     }
 });
 

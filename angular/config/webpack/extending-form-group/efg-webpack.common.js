@@ -22,7 +22,8 @@ module.exports = {
             {
                 test: /\.html$/,
                 include: [
-                    helpers.root('projects/extending-form-group/src')
+                    helpers.root('projects/extending-form-group/src'),
+                    helpers.root('projects/core')
                 ],
                 exclude: [
                     helpers.root('projects/extending-form-group/src/index.html')
@@ -43,7 +44,8 @@ module.exports = {
             {
                 test: /\.scss$/,
                 include: [
-                    helpers.root('projects/extending-form-group/src/app')
+                    helpers.root('projects/extending-form-group/src/app'),
+                    helpers.root('projects/core')
                 ],
                 use: [
                     'to-string-loader',
@@ -63,7 +65,8 @@ module.exports = {
             {
                 test: /\.css$/,
                 exclude: [
-                    helpers.root('projects/extending-form-group/src')
+                    helpers.root('projects/extending-form-group/src'),
+                    helpers.root('projects/core')
                 ],
                 use: [
                     miniCssExtractPlugin.loader,
@@ -73,7 +76,8 @@ module.exports = {
             {
                 test: /\.css$/,
                 include: [
-                    helpers.root('projects/extending-form-group/src')
+                    helpers.root('projects/extending-form-group/src'),
+                    helpers.root('projects/core')
                 ],
                 loader: 'raw-loader'
             }
