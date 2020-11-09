@@ -1,4 +1,4 @@
-import {AbstractControl, FormControl} from "@angular/forms";
+import {AbstractControl, FormControl, ValidationErrors} from "@angular/forms";
 import {EventEmitter} from "@angular/core";
 
 /**
@@ -19,6 +19,7 @@ declare module "@angular/forms" {
          * Declaring it here allows us to easily override it
          * */
         _isBoxedValue(formState: any): boolean
+        _updateValue(): void;
     }
 }
 
@@ -44,9 +45,38 @@ AbstractControl.prototype.show = function () {
 };
 
 /**
+ * Here we override the updateValueAndValidity method to account for 'visible' state
+ * */
+AbstractControl.prototype.updateValueAndValidity = function (opts: { onlySelf?: boolean, emitEvent?: boolean } = {}): void {
+    this._setInitialStatus();
+    this._updateValue();
+
+    if (this.visible === false) {
+        (this as {status: string}).status = 'VALID';
+    } else if (this.enabled) {
+        this._cancelExistingSubscription();
+        (this as { errors: ValidationErrors | null }).errors = this._runValidator();
+        (this as { status: string }).status = this._calculateStatus();
+
+        if (this.status === 'VALID' || this.status === 'PENDING') {
+            this._runAsyncValidator(opts.emitEvent);
+        }
+    }
+
+    if (opts.emitEvent !== false) {
+        (this.valueChanges as EventEmitter<any>).emit(this.value);
+        (this.statusChanges as EventEmitter<string>).emit(this.status);
+    }
+
+    if (this._parent && !opts.onlySelf) {
+        this._parent.updateValueAndValidity(opts);
+    }
+}
+
+/**
  * Here we override the _isBoxedValue method to enable passing initial 'visible' state
  * */
-AbstractControl.prototype._isBoxedValue = function(formState: any): boolean {
+AbstractControl.prototype._isBoxedValue = function (formState: any): boolean {
     return typeof formState === 'object' && formState !== null &&
         Object.keys(formState).length >= 2 && 'value' in formState &&
         ('disabled' in formState || 'visible' in formState);
@@ -56,16 +86,16 @@ AbstractControl.prototype._isBoxedValue = function(formState: any): boolean {
  * Now we override FormControl method to handle constructor passed params
  * */
 // @ts-ignore
-(FormControl.prototype as { _applyFormState: () => void })._applyFormState = function(formState: any) {
+(FormControl.prototype as { _applyFormState: () => void })._applyFormState = function (formState: any) {
     if (this._isBoxedValue(formState)) {
-        (this as {value: any}).value = this._pendingValue = formState.value;
+        (this as { value: any }).value = this._pendingValue = formState.value;
         formState.disabled ? this.disable({onlySelf: true, emitEvent: false}) :
             this.enable({onlySelf: true, emitEvent: false});
         // we added this line
         if (formState.visible === true || formState.visible === false) {
-            (this as {visible: any}).visible = formState.visible;
+            (this as { visible: any }).visible = formState.visible;
         }
     } else {
-        (this as {value: any}).value = this._pendingValue = formState;
+        (this as { value: any }).value = this._pendingValue = formState;
     }
 };
