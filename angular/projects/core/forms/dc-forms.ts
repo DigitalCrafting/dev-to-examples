@@ -27,8 +27,10 @@ declare module "@angular/forms" {
 
     interface FormControl extends AbstractControl {
         readonly defaultValue: any;
-        _isBoxedValue(formState: any): boolean;
         _applyValue(value: any): void;
+        clear(options?: Object);
+        // @ts-ignore
+        reset(options?: Object);
         _pendingChange;
     }
 
