@@ -106,15 +106,6 @@ AbstractControl.prototype._isBoxedValue = function (formState: any): boolean {
         ('disabled' in formState || 'visible' in formState);
 };
 
-/**
- * Now we override FormControl method to handle constructor passed params
- * */
-FormControl.prototype._isBoxedValue = function (formState: any): boolean {
-    return typeof formState === 'object' && formState !== null &&
-        Object.keys(formState).length >= 2 && 'value' in formState &&
-        ('disabled' in formState || 'visible' in formState);
-};
-
 // @ts-ignore
 (FormControl.prototype as { _applyFormState: () => void })._applyFormState = function (formState: any) {
     if (this._isBoxedValue(formState)) {
