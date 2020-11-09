@@ -11,17 +11,30 @@
                 <div class="card-body">
                     <div class="container">
                         <div class="row">
-                            <button class="btn btn-dark" type="button" (click)="toggleVisibility()">Toggle visibility
-                            </button>
+                            <div class="col-3">
+                                <button class="btn btn-dark" type="button" (click)="toggleVisibility()">Toggle visibility
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button class="btn btn-dark" type="button" (click)="clearControl()">Clear control
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button class="btn btn-dark" type="button" (click)="resetControl()">Reset control
+                                </button>
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 alert alert-primary" role="alert">
+                            <div class="col-6 alert alert-primary" role="alert">
                                 'test' control visibility: {{ formGroup.get('test').visible }}
                             </div>
-                            <div class="col-12  alert alert-primary" role="alert">
+                            <div class="col-6  alert alert-primary" role="alert">
+                                'test' control dirty: {{ formGroup.get('test').dirty }}
+                            </div>
+                            <div class="col-6  alert alert-primary" role="alert">
                                 'test' control validity: {{ formGroup.get('test').valid }}
                             </div>
-                            <div class="col-12  alert alert-primary" role="alert">
+                            <div class="col-6  alert alert-primary" role="alert">
                                 FormGroup validity: {{ formGroup.valid }}
                             </div>
                         </div>

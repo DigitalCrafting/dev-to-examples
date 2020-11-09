@@ -11,7 +11,7 @@ export class AppComponent {
   title = 'extending-form-group-example';
   formGroup = new FormGroup({
     test: new FormControl({
-      value: "",
+      value: "testValue",
       visible: true
     }, Validators.required)
   });
@@ -22,6 +22,13 @@ export class AppComponent {
     setTimeout(() => {
       this.formGroup.updateValueAndValidity();
     });
+  }
 
+  clearControl() {
+    this.formGroup.get('test').clear();
+  }
+
+  resetControl() {
+    this.formGroup.get('test').reset();
   }
 }
