@@ -110,8 +110,9 @@ AbstractControl.prototype._isBoxedValue = function (formState: any): boolean {
 
 AbstractControl.prototype.controlValueChanges = new EventEmitter<any>();
 
-AbstractControl.prototype.setControlValue = function (value: any, options: {emitEvent?: boolean, emitValueEvent?: boolean}): void {
-    this.setValue(value, {emitEvent: options.emitValueEvent});
+AbstractControl.prototype.setControlValue = function (value: any, options: { emitEvent?: boolean, emitValueEvent?: boolean }): void {
+    let opt = options ? {emitEvent: options.emitValueEvent} : null;
+    this.setValue(value, opt);
 };
 
 // @ts-ignore
@@ -147,15 +148,15 @@ FormControl.prototype.clear = function (options?: Object) {
     this._applyValue(null, options);
 };
 
-FormControl.prototype.setControlValue = function (value: any, options?: {emitEvent?: boolean, emitValueEvent?: boolean}): void {
+FormControl.prototype.setControlValue = function (value: any, options?: { emitEvent?: boolean, emitValueEvent?: boolean }): void {
     if (this.disabled) {
         this.enable();
-        this.setValue(value, {emitEvent: options.emitValueEvent});
+        this.setValue(value, {emitEvent: options && options.emitValueEvent});
         this.disable();
     } else {
-        this.setValue(value, {emitEvent: options.emitValueEvent});
+        this.setValue(value, {emitEvent: options && options.emitValueEvent});
     }
-    if (options.emitEvent) {
+    if (options && options.emitEvent) {
         this.controlValueChanges.emit(value);
     }
 };
