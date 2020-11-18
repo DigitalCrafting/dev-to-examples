@@ -16,11 +16,19 @@
                                 </button>
                             </div>
                             <div class="col-3">
+                                <button class="btn btn-dark" type="button" (click)="toggleEnabled()">Toggle enabled
+                                </button>
+                            </div>
+                            <div class="col-3">
                                 <button class="btn btn-dark" type="button" (click)="clearControl()">Clear control
                                 </button>
                             </div>
                             <div class="col-3">
                                 <button class="btn btn-dark" type="button" (click)="resetControl()">Reset control
+                                </button>
+                            </div>
+                            <div class="col-3">
+                                <button class="btn btn-dark" type="button" (click)="setControlValue()">Set control value "test"
                                 </button>
                             </div>
                         </div>
@@ -36,6 +44,9 @@
                             </div>
                             <div class="col-6  alert alert-primary" role="alert">
                                 FormGroup validity: {{ formGroup.valid }}
+                            </div>
+                            <div class="col-6  alert alert-primary" role="alert">
+                                FormGroup enabled: {{ formGroup.enabled }}
                             </div>
                         </div>
                         <div class="row" [formGroup]="formGroup">

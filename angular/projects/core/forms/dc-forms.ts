@@ -10,13 +10,14 @@ import {EventEmitter} from "@angular/core";
 declare module "@angular/forms" {
     interface AbstractControl {
         visibilityChanges: EventEmitter<boolean>;
+        controlValueChanges: EventEmitter<any>;
         readonly visible: boolean;
         show();
         hide();
         clear(value?: any, options?: Object);
         // @ts-ignore
         reset(value?: any, options?: Object);
-
+        setControlValue(value: any, options?: {emitEvent?: boolean, emitValueEvent?: boolean});
         /**
          * This methods is marked as internal inside the AbstractControl.
          * Declaring it here allows us to easily override it
@@ -31,6 +32,7 @@ declare module "@angular/forms" {
         clear(options?: Object);
         // @ts-ignore
         reset(options?: Object);
+        setControlValue(value: any, options?: {emitEvent?: boolean, emitValueEvent?: boolean});
         _pendingChange;
     }
 
@@ -106,6 +108,12 @@ AbstractControl.prototype._isBoxedValue = function (formState: any): boolean {
         ('disabled' in formState || 'visible' in formState);
 };
 
+AbstractControl.prototype.controlValueChanges = new EventEmitter<any>();
+
+AbstractControl.prototype.setControlValue = function (value: any, options: {emitEvent?: boolean, emitValueEvent?: boolean}): void {
+    this.setValue(value, {emitEvent: options.emitValueEvent});
+};
+
 // @ts-ignore
 (FormControl.prototype as { _applyFormState: () => void })._applyFormState = function (formState: any) {
     if (this._isBoxedValue(formState)) {
@@ -137,6 +145,19 @@ FormControl.prototype.reset = function (options?: Object) {
 
 FormControl.prototype.clear = function (options?: Object) {
     this._applyValue(null, options);
+};
+
+FormControl.prototype.setControlValue = function (value: any, options?: {emitEvent?: boolean, emitValueEvent?: boolean}): void {
+    if (this.disabled) {
+        this.enable();
+        this.setValue(value, {emitEvent: options.emitValueEvent});
+        this.disable();
+    } else {
+        this.setValue(value, {emitEvent: options.emitValueEvent});
+    }
+    if (options.emitEvent) {
+        this.controlValueChanges.emit(value);
+    }
 };
 
 /**

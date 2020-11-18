@@ -16,6 +16,11 @@ export class AppComponent {
     }, Validators.required)
   });
 
+  ngOnInit() {
+    this.formGroup.get('test').valueChanges.subscribe(value => console.log("Value changed: " + value));
+    this.formGroup.get('test').controlValueChanges.subscribe(value => console.log("Control value changed: " + value));
+  }
+
   toggleVisibility() {
     let testControl = this.formGroup.get('test');
     testControl.visible ? testControl.hide() : testControl.show();
@@ -30,5 +35,15 @@ export class AppComponent {
 
   resetControl() {
     this.formGroup.get('test').reset();
+  }
+
+  setControlValue() {
+    let control = this.formGroup.get('test');
+    control.setControlValue("test", {emitEvent: true, emitValueEvent: true});
+  }
+
+  toggleEnabled() {
+    let control = this.formGroup.get('test');
+    control.enabled ? control.disable() : control.enable();
   }
 }
